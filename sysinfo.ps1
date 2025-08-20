@@ -21,8 +21,8 @@ function Get-CpuInfo {
 function Get-MemInfo {
     $memGb = [math]::Round($os.TotalVisibleMemorySize / 1MB, 2)
     $freeMem = [math]::Round($os.FreePhysicalMemory / 1MB, 2)
-    Write-Host "`nTotal Memory: $($memGb) GB"
-    Write-Host "Available Memory: $($freeMem) GB"
+    Write-Host "`nTotal Memory: $memGb GB"
+    Write-Host "Available Memory: $freeMem GB"
 }
 
 function Get-GpuInfo {
