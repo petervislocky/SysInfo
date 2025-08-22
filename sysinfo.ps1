@@ -1,5 +1,7 @@
 param (
-    [switch]$verbose
+    [switch]$verbose,
+    [switch]$cpu,
+    [switch]$gpu
 )
 
 function Get-OsInfo {
@@ -44,10 +46,17 @@ function Get-DriveInfo {
 
 # Main
 Write-Host "==========System Info==========" -ForegroundColor Blue
-Get-OsInfo
-Get-CpuInfo
-Get-MemInfo
-if ($verbose) {
+if ($cpu) {
+    Get-CpuInfo
+}
+elseif ($gpu) {
     Get-GpuInfo
-    Get-DriveInfo 
+} else {
+    Get-OsInfo
+    Get-CpuInfo
+    Get-MemInfo
+    if ($verbose) {
+        Get-GpuInfo
+        Get-DriveInfo 
+    }
 }
