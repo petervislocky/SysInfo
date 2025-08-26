@@ -14,12 +14,13 @@ function Get-OsInfo {
 
 function Get-CpuInfo {
     $cpu = Get-CimInstance Win32_Processor
-    Write-Host "`nCPU: $($cpu.Name)"
+    $volts = $cpu.CurrentVoltage / 10
+    Write-Host "`n$($cpu.DeviceID): $($cpu.Name)"
     Write-Host "Cores/Threads: $($cpu.NumberOfCores) / $($cpu.ThreadCount)"
-    Write-Host "L2 Cache $($cpu.L2CacheSize) KB L3 Cache $($cpu.L3CacheSize) KB"
+    Write-Host "L2 Cache $($cpu.L2CacheSize) | KB L3 Cache $($cpu.L3CacheSize) KB"
     Write-Host "CPU Load: $($cpu.LoadPercentage)%"
     Write-Host "Clock Speed: $($cpu.CurrentClockSpeed) mhz Max Boost: $($cpu.MaxClockSpeed) mhz"
-    Write-Host "Current Voltage: $($cpu.CurrentVoltage)"
+    Write-Host "Current Voltage: $volts V"
 }
 
 function Get-MemInfo {
