@@ -4,10 +4,12 @@ param (
     [switch]$gpu
 )
 
+$os = Get-CimInstance Win32_OperatingSystem # used in Get-OsInfo and Get-MemInfo
 function Get-OsInfo {
-    $os = Get-CimInstance Win32_OperatingSystem
-    Write-Host "`nOS: $($os.Caption) $($os.Version)"
+    Write-Host "`nOS: $($os.Caption) $($os.Version) ($($os.OSArchitecture))"
     Write-Host "User: $($os.CSName)"
+    Write-Host "Sys Clock: $($os.LocalDateTime)"
+    Write-Host "Last Boot Time: $($os.LastBootUpTime)"
 }
 
 function Get-CpuInfo {
