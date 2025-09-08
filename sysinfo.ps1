@@ -15,6 +15,7 @@ function Get-OsInfo {
 function Get-CpuInfo {
     $cpu = Get-CimInstance Win32_Processor
     $volts = $cpu.CurrentVoltage / 10
+
     Write-Host "`n$($cpu.DeviceID): $($cpu.Name)"
     Write-Host "Cores/Threads: $($cpu.NumberOfCores) / $($cpu.ThreadCount)"
     Write-Host "L2 Cache $($cpu.L2CacheSize) | KB L3 Cache $($cpu.L3CacheSize) KB"
@@ -26,15 +27,22 @@ function Get-CpuInfo {
 function Get-MemInfo {
     $memGb = [math]::Round($os.TotalVisibleMemorySize / 1MB, 2)
     $freeMem = [math]::Round($os.FreePhysicalMemory / 1MB, 2)
+
     Write-Host "`nTotal Memory: $memGb GB" -ForegroundColor Yellow
     Write-Host "Available Memory: $freeMem GB" -ForegroundColor Green
 }
 
 function Get-GpuInfo {
     $gpu = Get-CimInstance Win32_VideoController
+    $horizontalRes = $($gpu.CurrentHorizontalResolution)
+    $verticalRes = $($gpu.CurrentVerticalResolution)
+
     Write-Host "`nGPU: $($gpu.Name)"
-    Write-Host "Driver Version: $($gpu.DriverVersion)"
-    Write-Host "Driver Date: $($gpu.DriverDate)"
+    Write-Host "Display Resolution: $($horizontalRes | Select-Object -First 1) x $($verticalRes | Select-Object -First 1)"
+    Write-Host "Current Refresh Rate: $($gpu.CurrentRefreshRate | Select-Object -First 1)"
+    Write-Host "Max Refresh Rate: $($gpu.MaxRefreshRate | Select-Object -First 1)"
+    Write-Host "Driver Version: $($gpu.DriverVersion | Select-Object -First 1)"
+    Write-Host "Driver Date: $($gpu.DriverDate | Select-Object -First 1)"
 }
 
 function Get-DriveInfo {
@@ -43,7 +51,7 @@ function Get-DriveInfo {
     foreach ($disk in $drives) {
         $free = [math]::Round($disk.FreeSpace / 1GB, 2)
         $size = [math]::Round($disk.Size / 1GB, 2)
-        Write-Host " $($disk.DeviceID): $free GB free / $size GB total"
+        Write-Host "$($disk.DeviceID) $free GB free / $size GB total"
     }
 }
 
